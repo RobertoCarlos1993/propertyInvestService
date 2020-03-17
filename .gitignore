@@ -1,2 +1,4 @@
 .vscode
 .project_git_config
+variables.env
+investor-app/backend/node_modules/
