@@ -31,19 +31,33 @@ const Select = styled.select`
 
 const FilterForm = () => {
   const [query, setQuery] = useState({
-    operation: "",
+    operation: "sale",
     price: "",
-    propertyType: "",
-    size: ""
+    propertyType: "flat",
+    size: "",
+    endType: "find"
   });
 
   const saveQueryParams = e => {
+    console.log(e.target.value.type);
     setQuery({ ...query, [e.target.name]: e.target.value });
   };
 
   const callDB = () => {
-    //here we will call an API point to bring the data saved in our DB
-    console.log(query);
+    // call endpoint
+    const requestOptions = {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      redirect: "follow",
+      body: JSON.stringify({ ...query })
+    };
+    fetch("/filterProperty", requestOptions)
+      .then(response => response.text())
+      .then(result => console.log(result))
+      .catch(error => console.log("error", error));
   };
 
   return (
@@ -54,7 +68,7 @@ const FilterForm = () => {
         <option value="rent">Rent</option>
       </Select>
       <label>Property Type:</label>
-      <Select type="text" name="operation" onChange={saveQueryParams}>
+      <Select type="text" name="propertyType" onChange={saveQueryParams}>
         <option value="flat">Flat</option>
         <option value="chalet">Chalet</option>
         <option value="countryHouse">Country House</option>
@@ -65,6 +79,11 @@ const FilterForm = () => {
       <Input type="text" name="size" onChange={saveQueryParams} />
       <label>Price:</label>
       <Input type="text" name="price" onChange={saveQueryParams} />
+      <label>Call Endpoint Type:</label>
+      <Select type="text" name="endType" onChange={saveQueryParams}>
+        <option value="findAll">Find All</option>
+        <option value="find">Filter</option>
+      </Select>
       <Button primary onClick={callDB}>
         Call DB
       </Button>

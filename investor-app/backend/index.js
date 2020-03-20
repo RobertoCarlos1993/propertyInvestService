@@ -3,28 +3,24 @@ require("dotenv").config({
 });
 var request = require("request");
 
-const URL_API_DATA = process.env.URL_DATA;
-const URL_REQUEST_AUTH = process.env.URL_REQUEST_AUTH;
+var express = require("express"),
+  app = express();
 
-const ENCODE_CREDENTIALS = Buffer.from(
-  `${process.env.API_KEY}:${process.env.API_SECRET}`
-).toString("base64");
+app.use(express.json());
 
-// 1. REQUEST THE AUTH TOKEN
-var options = {
-  method: "POST",
-  url: `${URL_REQUEST_AUTH}`,
-  headers: {
-    "Content-Type": "application/x-www-form-urlencoded",
-    Authorization: `Basic ${ENCODE_CREDENTIALS}`
-  },
-  form: {
-    grant_type: "client_credentials"
-  }
-};
-
-request(options, function(error, response) {
-  if (error) throw new Error(error);
-  // print body and inspect token
-  console.log(response.body);
+app.post("/filterProperty", (req, res) => {
+  const query_values = req.body; // send from the f/e to b/e
+  console.log('Params received:', query_values);
+  // 1. Define the options prior to call
+  const options_endpoint = {
+    method: "GET",
+    url: `${process.env.IP_DATA}:${process.env.IP_DATA_PORT_OPEN}/${query_values.endType}`
+  };
+  request(options_endpoint, function(error, response) {
+    if (error) res.send(error);
+    // results
+    res.send(response.body);
+  });
 });
+
+app.listen(process.env.PORT);
