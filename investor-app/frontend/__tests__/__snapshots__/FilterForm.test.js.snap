@@ -1,0 +1,202 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<FilterForm/> Click on btn and spapshot! 1`] = `
+<table
+  className="sc-AxhCb kerOgc"
+  data-test="propertiesTable"
+>
+  <thead>
+    <tr>
+      <th>
+        Address
+      </th>
+      <th>
+        Price
+      </th>
+      <th>
+        Size
+      </th>
+      <th>
+        Url
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr
+      key="123"
+    >
+      <td>
+        Centro, Leganés
+      </td>
+      <td>
+        125000
+      </td>
+      <td>
+        70
+      </td>
+      <td>
+        https://www.idealista.com/inmueble/87821179/
+      </td>
+    </tr>
+    <tr
+      key="124"
+    >
+      <td>
+        Casco Antiguo, Leganés
+      </td>
+      <td>
+        299700
+      </td>
+      <td>
+        152
+      </td>
+      <td>
+        https://www.idealista.com/inmueble/89052114/
+      </td>
+    </tr>
+  </tbody>
+</table>
+`;
+
+exports[`<FilterForm/> renders properly 1`] = `
+<FilterForm>
+  <label>
+    Operation:
+  </label>
+  <styled.select
+    name="operation"
+    onChange={[Function]}
+    type="text"
+  >
+    <select
+      className="sc-AxiKw dZlwWe"
+      name="operation"
+      onChange={[Function]}
+      type="text"
+    >
+      <option
+        value="sale"
+      >
+        Sale
+      </option>
+      <option
+        value="rent"
+      >
+        Rent
+      </option>
+    </select>
+  </styled.select>
+  <label>
+    Property Type:
+  </label>
+  <styled.select
+    name="propertyType"
+    onChange={[Function]}
+    type="text"
+  >
+    <select
+      className="sc-AxiKw dZlwWe"
+      name="propertyType"
+      onChange={[Function]}
+      type="text"
+    >
+      <option
+        value="flat"
+      >
+        Flat
+      </option>
+      <option
+        value="chalet"
+      >
+        Chalet
+      </option>
+      <option
+        value="countryHouse"
+      >
+        Country House
+      </option>
+      <option
+        value="garage"
+      >
+        Garage
+      </option>
+      <option
+        value="office"
+      >
+        Office
+      </option>
+    </select>
+  </styled.select>
+  <label>
+    Size:
+  </label>
+  <styled.input
+    name="size"
+    onChange={[Function]}
+    type="text"
+  >
+    <input
+      className="sc-AxirZ opgZf"
+      name="size"
+      onChange={[Function]}
+      type="text"
+    />
+  </styled.input>
+  <label>
+    Price:
+  </label>
+  <styled.input
+    name="price"
+    onChange={[Function]}
+    type="text"
+    value=""
+  >
+    <input
+      className="sc-AxirZ opgZf"
+      name="price"
+      onChange={[Function]}
+      type="text"
+      value=""
+    />
+  </styled.input>
+  <label>
+    Call Endpoint Type:
+  </label>
+  <styled.select
+    name="endType"
+    onChange={[Function]}
+    type="text"
+  >
+    <select
+      className="sc-AxiKw dZlwWe"
+      name="endType"
+      onChange={[Function]}
+      type="text"
+    >
+      <option
+        value="findAll"
+      >
+        Find All
+      </option>
+      <option
+        value="find"
+      >
+        Filter
+      </option>
+    </select>
+  </styled.select>
+  <styled.button
+    data-test="btnSubmit"
+    onClick={[Function]}
+    primary={true}
+  >
+    <button
+      className="sc-AxjAm haGGsl"
+      data-test="btnSubmit"
+      onClick={[Function]}
+    >
+      Call DB
+    </button>
+  </styled.button>
+</FilterForm>
+`;

@@ -1,5 +1,21 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+const fakeProperties = [
+  {
+    id: "123",
+    url: "https://www.idealista.com/inmueble/87821179/",
+    price: 125000,
+    size: 70,
+    address: "Centro, Leganés"
+  },
+  {
+    id: "124",
+    url: "https://www.idealista.com/inmueble/89052114/",
+    price: 299700,
+    size: 152,
+    address: "Casco Antiguo, Leganés"
+  }
+];
 
 const Button = styled.button`
   background: ${props => (props.primary ? "grey" : "white")};
@@ -29,6 +45,38 @@ const Select = styled.select`
   margin-left: 10px;
 `;
 
+const Table = styled.table`
+  border-spacing: 0;
+  width: 100%;
+  border: 1px solid ${props => props.theme.offWhite};
+  thead {
+    font-size: 10px;
+  }
+  td,
+  th {
+    border-bottom: 1px solid ${props => props.theme.offWhite};
+    border-right: 1px solid ${props => props.theme.offWhite};
+    padding: 5px;
+    position: relative;
+    &:last-child {
+      border-right: none;
+      width: 150px;
+      button {
+        width: 100%;
+      }
+    }
+    label {
+      padding: 10px 5px;
+      display: block;
+    }
+  }
+  tr {
+    &:hover {
+      background: ${props => props.theme.offWhite};
+    }
+  }
+`;
+
 const FilterForm = () => {
   const [query, setQuery] = useState({
     operation: "sale",
@@ -38,14 +86,18 @@ const FilterForm = () => {
     endType: "find"
   });
 
+  const [properties, setProperties] = useState([]);
+
   const saveQueryParams = e => {
-    console.log(e.target.value.type);
+    console.log(e.target.value);
     setQuery({ ...query, [e.target.name]: e.target.value });
   };
 
   const callDB = () => {
+    console.log("hi");
+    setProperties(fakeProperties);
     // call endpoint
-    const requestOptions = {
+    /* const requestOptions = {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -57,7 +109,7 @@ const FilterForm = () => {
     fetch("/filterProperty", requestOptions)
       .then(response => response.text())
       .then(result => console.log(result))
-      .catch(error => console.log("error", error));
+      .catch(error => console.log("error", error));*/
   };
 
   return (
@@ -78,15 +130,42 @@ const FilterForm = () => {
       <label>Size:</label>
       <Input type="text" name="size" onChange={saveQueryParams} />
       <label>Price:</label>
-      <Input type="text" name="price" onChange={saveQueryParams} />
+      <Input
+        type="text"
+        name="price"
+        onChange={saveQueryParams}
+        value={query.price}
+      />
       <label>Call Endpoint Type:</label>
       <Select type="text" name="endType" onChange={saveQueryParams}>
         <option value="findAll">Find All</option>
         <option value="find">Filter</option>
       </Select>
-      <Button primary onClick={callDB}>
+      <Button primary onClick={callDB} data-test="btnSubmit">
         Call DB
       </Button>
+      {properties.length > 0 && (
+        <Table data-test="propertiesTable">
+          <thead>
+            <tr>
+              <th>Address</th>
+              <th>Price</th>
+              <th>Size</th>
+              <th>Url</th>
+            </tr>
+          </thead>
+          <tbody>
+            {properties.map(property => (
+              <tr key={property.id}>
+                <td>{property.address}</td>
+                <td>{property.price}</td>
+                <td>{property.size}</td>
+                <td>{property.url}</td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      )}
     </>
   );
 };
