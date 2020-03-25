@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import BtnProperty from "./BtnProperty";
 
 const Button = styled.button`
   background: ${props => (props.primary ? "grey" : "white")};
@@ -61,6 +62,14 @@ const Table = styled.table`
   }
 `;
 
+const legalExpenses = price => {
+  const propertyTax = price * 0.0875;
+  const paperWork = 1612;
+  return propertyTax + paperWork;
+};
+
+const priceToEuroFormat = num => num.toLocaleString("es-ES") + "€";
+
 const FilterForm = () => {
   const [query, setQuery] = useState({
     operation: "sale",
@@ -72,6 +81,8 @@ const FilterForm = () => {
 
   const [properties, setProperties] = useState([]);
 
+  const [installment, setInstallment] = useState(null);
+
   const saveQueryParams = e => {
     console.log(e.target.value);
     setQuery({ ...query, [e.target.name]: e.target.value });
@@ -79,7 +90,7 @@ const FilterForm = () => {
 
   const callDB = () => {
     // call endpoint
-    if (query.endType == "all") {
+    if (query.endType === "all") {
       const requestOptions = {
         method: "GET",
         headers: {
@@ -98,7 +109,7 @@ const FilterForm = () => {
           "Content-Type": "application/json"
         },
         redirect: "follow",
-        body: JSON.stringify({...query})
+        body: JSON.stringify({ ...query })
       };
       fetch("/filter", requestOptions)
         .then(response => response.json())
@@ -145,21 +156,41 @@ const FilterForm = () => {
             <tr>
               <th>Address</th>
               <th>Price</th>
-              <th>Size</th>
+              <th>Legal Expenses (approx)</th>
+              <th>Size(&#13217;)</th>
               <th>Url</th>
+              <th>Mortgage Details</th>
             </tr>
           </thead>
           <tbody>
             {properties.map(property => (
-              <tr key={property.id}>
+              <tr key={property.id} id={property.id}>
                 <td>{property.address}</td>
-                <td>{property.price}</td>
+                <td>{priceToEuroFormat(property.price)}</td>
+                <td>{priceToEuroFormat(legalExpenses(property.price))}</td>
                 <td>{property.size}</td>
                 <td>{property.url}</td>
+                <td>
+                  <BtnProperty id={property.id} setI={setInstallment} />
+                </td>
               </tr>
             ))}
           </tbody>
         </Table>
+      )}
+      {installment != null && (
+        <p>
+          Installment is:{" "}
+          <span
+            style={{
+              fontWeight: "bold"
+            }}
+          >
+            {installment}
+          </span>
+          . Assuming a fix interest rate of 1.89% and mortgage lenght of 20
+          years. (NO DEPOSIT DOWN)
+        </p>
       )}
     </>
   );

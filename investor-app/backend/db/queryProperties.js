@@ -1,4 +1,5 @@
 const { Pool } = require("pg");
+const installment = require("../utils/installment");
 
 const client = new Pool({
   user: `${process.env.PGUSER}`,
@@ -32,7 +33,26 @@ const filter = (request, response) => {
   );
 };
 
+const installmentProperty = (request, response) => {
+  const body = request.body;
+  console.log(body);
+  client.query(
+    `SELECT * FROM PROPERTIES WHERE id='${body.id}'`,
+    (error, data) => {
+      if (error) {
+        throw error;
+      }
+      response.status(200).json({
+        data: {
+          installment: installment(data.rows[0].price, 1.89, 20)
+        }
+      });
+    }
+  );
+};
+
 module.exports = {
   getAll,
-  filter
+  filter,
+  installmentProperty
 };
