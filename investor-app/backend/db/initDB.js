@@ -6,10 +6,10 @@ let properties = JSON.parse(idealista_response).elementList;
 // clean-up fields "price", "address", "url", "size", "propertyType"
 
 const client = new Pool({
-  user: "robertocarlos",
-  host: "localhost",
-  database: "property",
-  port: "5432"
+  user: `${process.env.PGUSER}`,
+  host: `${process.env.PGHOST}`,
+  database: `${process.env.PGDATABASE}`,
+  port: `${process.env.PGPORT}`
 });
 
 client.connect();
