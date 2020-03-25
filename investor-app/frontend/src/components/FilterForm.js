@@ -1,21 +1,5 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-const fakeProperties = [
-  {
-    id: "123",
-    url: "https://www.idealista.com/inmueble/87821179/",
-    price: 125000,
-    size: 70,
-    address: "Centro, Leganés"
-  },
-  {
-    id: "124",
-    url: "https://www.idealista.com/inmueble/89052114/",
-    price: 299700,
-    size: 152,
-    address: "Casco Antiguo, Leganés"
-  }
-];
 
 const Button = styled.button`
   background: ${props => (props.primary ? "grey" : "white")};
@@ -83,7 +67,7 @@ const FilterForm = () => {
     price: "",
     propertyType: "flat",
     size: "",
-    endType: "find"
+    endType: "all"
   });
 
   const [properties, setProperties] = useState([]);
@@ -94,22 +78,33 @@ const FilterForm = () => {
   };
 
   const callDB = () => {
-    console.log("hi");
-    setProperties(fakeProperties);
     // call endpoint
-    /* const requestOptions = {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      },
-      redirect: "follow",
-      body: JSON.stringify({ ...query })
-    };
-    fetch("/filterProperty", requestOptions)
-      .then(response => response.text())
-      .then(result => console.log(result))
-      .catch(error => console.log("error", error));*/
+    if (query.endType == "all") {
+      const requestOptions = {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        redirect: "follow"
+      };
+      fetch("/all", requestOptions)
+        .then(response => response.json())
+        .then(result => setProperties(result.data))
+        .catch(error => console.log("error", error));
+    } else {
+      const requestOptions = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        redirect: "follow",
+        body: JSON.stringify({...query})
+      };
+      fetch("/filter", requestOptions)
+        .then(response => response.json())
+        .then(result => setProperties(result.data))
+        .catch(error => console.log("error", error));
+    }
   };
 
   return (
@@ -138,8 +133,8 @@ const FilterForm = () => {
       />
       <label>Call Endpoint Type:</label>
       <Select type="text" name="endType" onChange={saveQueryParams}>
-        <option value="findAll">Find All</option>
-        <option value="find">Filter</option>
+        <option value="all">Find All</option>
+        <option value="filter">Filter</option>
       </Select>
       <Button primary onClick={callDB} data-test="btnSubmit">
         Call DB

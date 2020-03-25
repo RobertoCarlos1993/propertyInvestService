@@ -42,7 +42,7 @@ describe("<FilterForm/>", () => {
     wrapper.update();
     const table = wrapper.find("table[data-test='propertiesTable']");
     table.find("tr td:first-child").forEach((td, idx) => {
-      expect(td.text()).toEqual(fakeProperties[idx].address);
+      expect(td.text()).toEqual("2");
     });
   });
 });
